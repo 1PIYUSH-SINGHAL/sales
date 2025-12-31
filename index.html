@@ -307,6 +307,7 @@
           <button onclick="calculate()">Calculate</button>
           <div class="result" id="out"></div>
         </div>
+        <button onclick="downloadKLD()">Download KLD (PNG)</button>
 
         <div class="card canvas-card">
           <canvas id="canvas" width="1200" height="420"></canvas>
@@ -502,6 +503,13 @@
         ctx.fillText(`${Math.round(top)} MM`, 0, 0);
         ctx.restore();
       }
+
+      function downloadKLD(){
+const link=document.createElement("a")
+link.download="kld.png"
+link.href=canvas.toDataURL("image/png")
+link.click()
+}
 
       renderRates();
     </script>
