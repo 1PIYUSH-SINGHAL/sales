@@ -206,31 +206,31 @@
             <label>Top Paper</label
             ><select id="pt" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
             <label>Flute Paper</label
             ><select id="pf" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin</option>
+              <option>kraft kraft</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
             <label>Bottom Paper</label
             ><select id="pb" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
 
             <label>Flute Type</label
             ><select id="ft">
-              <option>a</option>
-              <option>b</option>
-              <option>c</option>
-              <option>e</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>E</option>
             </select>
           </div>
 
@@ -245,52 +245,52 @@
             <label>Top Paper</label
             ><select id="pt5" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
             <label>Flute 1 Paper</label
             ><select id="pf1" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
             <label>Middle Paper</label
             ><select id="pm" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
             <label>Flute 2 Paper</label
             ><select id="pf2" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
             <label>Bottom Paper</label
             ><select id="pb5" onchange="renderRates()">
               <option>kraft</option>
-              <option>virgin</option>
+              <option>virgin kraft</option>
               <option>fbb</option>
               <option>duplex</option>
             </select>
 
             <label>Flute 1 Type</label
             ><select id="ft1">
-              <option>a</option>
-              <option>b</option>
-              <option>c</option>
-              <option>e</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>E</option>
             </select>
             <label>Flute 2 Type</label
             ><select id="ft2">
-              <option>a</option>
-              <option>b</option>
-              <option>c</option>
-              <option>e</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>E</option>
             </select>
           </div>
 
@@ -404,9 +404,6 @@
       function draw(L, W, H, p) {
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle="#ffffff"
-        ctx.fillRect(0,0,canvas.width,canvas.height)
-
 
         const fill = {
           kraft: "#b08953",
