@@ -400,42 +400,81 @@
       function draw(L, W, H, p) {
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         const fill = {
           kraft: "#b08953",
           virgin: "#d4a017",
           fbb: "#f5f6f2",
           duplex: "#e6e2d6",
         }[p];
+        const line = "#5C3A1E";
+        const text = "#2B1A0F";
         const glue = 40;
+
+        const top = W / 2;
+        const bottom = W / 2;
         const blankL = 2 * (L + W) + glue;
-        const blankW = W / 2 + H + W / 2;
+        const blankW = top + H + bottom;
+
         const s = Math.min(
           (canvas.width * 0.85) / blankL,
-          (canvas.height * 0.85) / blankW
+          (canvas.height * 0.78) / blankW
         );
         const ox = (canvas.width - blankL * s) / 2;
-        const oy = (canvas.height - blankW * s) / 2;
+        const oy = (canvas.height - blankW * s) / 2 + 20;
+
         ctx.fillStyle = fill;
         ctx.fillRect(ox, oy, blankL * s, blankW * s);
-        ctx.strokeStyle = "#5C3A1E";
+
+        ctx.strokeStyle = line;
         ctx.lineWidth = 2;
         ctx.strokeRect(ox, oy, blankL * s, blankW * s);
+
         ctx.setLineDash([6, 6]);
         let x = glue;
         ctx.beginPath();
         ctx.moveTo(ox + x * s, oy);
         ctx.lineTo(ox + x * s, oy + blankW * s);
-        [L, W, L].forEach((p) => {
-          x += p;
+        [L, W, L].forEach((v) => {
+          x += v;
           ctx.moveTo(ox + x * s, oy);
           ctx.lineTo(ox + x * s, oy + blankW * s);
         });
-        ctx.moveTo(ox, oy + (W / 2) * s);
-        ctx.lineTo(ox + blankL * s, oy + (W / 2) * s);
-        ctx.moveTo(ox, oy + (W / 2 + H) * s);
-        ctx.lineTo(ox + blankL * s, oy + (W / 2 + H) * s);
+        ctx.moveTo(ox, oy + bottom * s);
+        ctx.lineTo(ox + blankL * s, oy + bottom * s);
+        ctx.moveTo(ox, oy + (bottom + H) * s);
+        ctx.lineTo(ox + blankL * s, oy + (bottom + H) * s);
         ctx.stroke();
         ctx.setLineDash([]);
+
+        ctx.fillStyle = text;
+        ctx.font = `${Math.max(12 * s, 11)}px Inter`;
+        ctx.textAlign = "center";
+
+        let tx = glue;
+        [L, W, L, W].forEach((v) => {
+          ctx.fillText(`${Math.round(v)} MM`, ox + (tx + v / 2) * s, oy - 8);
+          tx += v;
+        });
+        ctx.fillText(`${glue} MM`, ox + (glue * s) / 2, oy - 8);
+
+        ctx.save();
+        ctx.translate(ox - 10, oy + (bottom * s) / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(`${Math.round(bottom)} MM`, 0, 0);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(ox - 10, oy + (bottom + H / 2) * s);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(`${Math.round(H)} MM`, 0, 0);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(ox - 10, oy + (bottom + H + top / 2) * s);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(`${Math.round(top)} MM`, 0, 0);
+        ctx.restore();
       }
 
       renderRates();
