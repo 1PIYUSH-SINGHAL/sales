@@ -1,191 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Corrugated Box Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui;background:#eef1f5;color:#1f2937}
-.wrapper{max-width:1200px;margin:40px auto;padding:0 20px}
-h1{font-size:28px;font-weight:700;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:380px 1fr;gap:24px}
-.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 10px 25px rgba(0,0,0,.08)}
-.card h2{margin:0 0 14px;font-size:18px;font-weight:600}
-label{font-size:13px;font-weight:500;margin-top:10px;display:block}
-input,select{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #d1d5db;font-size:14px}
-button{width:100%;margin-top:18px;padding:14px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
-button:hover{background:#1e4fd8}
-.result{margin-top:14px;font-size:15px;font-weight:600}
-.canvas-card{padding:20px;display:flex;align-items:center;justify-content:center}
-canvas{width:100%;height:420px;border-radius:12px;background:#fafafa;border:1px solid #e5e7eb}
-.hidden{display:none}
-.rate-grid{display:grid;gap:10px}
-</style>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Corrugated Box Calculator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui;
+        background: #eef1f5;
+        color: #1f2937;
+      }
+      .wrapper {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 24px;
+      }
+      .card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      }
+      .card h2 {
+        margin: 0 0 14px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      label {
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 10px;
+        display: block;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        font-size: 14px;
+      }
+      button {
+        width: 100%;
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 10px;
+        border: none;
+        background: #2563eb;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1e4fd8;
+      }
+      .result {
+        margin-top: 14px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .canvas-card {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      canvas {
+        width: 100%;
+        height: 420px;
+        border-radius: 12px;
+        background: #fafafa;
+        border: 1px solid #e5e7eb;
+      }
+      .hidden {
+        display: none;
+      }
+      .rate-grid {
+        display: grid;
+        gap: 10px;
+      }
+      @media (max-width: 1200px) {
+        .grid {
+          grid-template-columns: 360px 1fr;
+        }
+        canvas {
+          height: 380px;
+        }
+      }
 
-<body>
-<div class="wrapper">
-<h1>Corrugated Box Calculator</h1>
+      @media (max-width: 1024px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .canvas-card {
+          order: -1;
+        }
+        canvas {
+          height: 360px;
+        }
+      }
 
-<div class="grid">
-<div class="card">
+      @media (max-width: 768px) {
+        .wrapper {
+          margin: 20px auto;
+        }
+        h1 {
+          font-size: 24px;
+        }
+        .card {
+          padding: 16px;
+        }
+        input,
+        select {
+          padding: 12px;
+          font-size: 15px;
+        }
+        button {
+          padding: 14px;
+          font-size: 16px;
+        }
+        canvas {
+          height: 320px;
+        }
+      }
 
-<h2>Box Details</h2>
-<label>Length</label><input id="len">
-<label>Breadth</label><input id="br">
-<label>Height</label><input id="ht">
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 22px;
+        }
+        label {
+          font-size: 12px;
+        }
+        input,
+        select {
+          padding: 14px;
+          font-size: 16px;
+        }
+        canvas {
+          height: 260px;
+        }
+      }
+    </style>
+  </head>
 
-<label>Unit</label>
-<select id="unit"><option value="mm">mm</option><option value="cm">cm</option><option value="inch">inch</option></select>
+  <body>
+    <div class="wrapper">
+      <h1>Corrugated Box Calculator</h1>
 
-<label>Dimension</label>
-<select id="dim"><option value="i">Inner</option><option value="o">Outer</option></select>
+      <div class="grid">
+        <div class="card">
+          <h2>Box Details</h2>
+          <label>Length</label><input id="len" /> <label>Breadth</label
+          ><input id="br" /> <label>Height</label><input id="ht" />
 
-<label>Ply</label>
-<select id="ply" onchange="togglePly()"><option value="3">3 Ply</option><option value="5">5 Ply</option></select>
+          <label>Unit</label>
+          <select id="unit">
+            <option value="mm">mm</option>
+            <option value="cm">cm</option>
+            <option value="inch">inch</option>
+          </select>
 
-<hr style="margin:18px 0;border:none;border-top:1px solid #e5e7eb">
+          <label>Dimension</label>
+          <select id="dim">
+            <option value="i">Inner</option>
+            <option value="o">Outer</option>
+          </select>
 
-<div id="ply3">
-<h2>3 Ply</h2>
-<label>Top GSM</label><input id="gsm_t">
-<label>Flute GSM</label><input id="gsm_f">
-<label>Bottom GSM</label><input id="gsm_b">
+          <label>Ply</label>
+          <select id="ply" onchange="togglePly()">
+            <option value="3">3 Ply</option>
+            <option value="5">5 Ply</option>
+          </select>
 
-<label>Top Paper</label><select id="pt" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
-<label>Flute Paper</label><select id="pf" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
-<label>Bottom Paper</label><select id="pb" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
+          <hr
+            style="margin: 18px 0; border: none; border-top: 1px solid #e5e7eb"
+          />
 
-<label>Flute Type</label><select id="ft"><option>a</option><option>b</option><option>c</option><option>e</option></select>
-</div>
+          <div id="ply3">
+            <h2>3 Ply</h2>
+            <label>Top GSM</label><input id="gsm_t" /> <label>Flute GSM</label
+            ><input id="gsm_f" /> <label>Bottom GSM</label><input id="gsm_b" />
 
-<div id="ply5" class="hidden">
-<h2>5 Ply</h2>
-<label>Top GSM</label><input id="gsm_t5">
-<label>Flute 1 GSM</label><input id="gsm_f1">
-<label>Middle GSM</label><input id="gsm_m">
-<label>Flute 2 GSM</label><input id="gsm_f2">
-<label>Bottom GSM</label><input id="gsm_b5">
+            <label>Top Paper</label
+            ><select id="pt" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
+            <label>Flute Paper</label
+            ><select id="pf" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
+            <label>Bottom Paper</label
+            ><select id="pb" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
 
-<label>Top Paper</label><select id="pt5" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
-<label>Flute 1 Paper</label><select id="pf1" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
-<label>Middle Paper</label><select id="pm" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
-<label>Flute 2 Paper</label><select id="pf2" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
-<label>Bottom Paper</label><select id="pb5" onchange="renderRates()"><option>kraft</option><option>virgin</option><option>fbb</option><option>duplex</option></select>
+            <label>Flute Type</label
+            ><select id="ft">
+              <option>a</option>
+              <option>b</option>
+              <option>c</option>
+              <option>e</option>
+            </select>
+          </div>
 
-<label>Flute 1 Type</label><select id="ft1"><option>a</option><option>b</option><option>c</option><option>e</option></select>
-<label>Flute 2 Type</label><select id="ft2"><option>a</option><option>b</option><option>c</option><option>e</option></select>
-</div>
+          <div id="ply5" class="hidden">
+            <h2>5 Ply</h2>
+            <label>Top GSM</label><input id="gsm_t5" />
+            <label>Flute 1 GSM</label><input id="gsm_f1" />
+            <label>Middle GSM</label><input id="gsm_m" />
+            <label>Flute 2 GSM</label><input id="gsm_f2" />
+            <label>Bottom GSM</label><input id="gsm_b5" />
 
-<hr style="margin:18px 0;border:none;border-top:1px solid #e5e7eb">
+            <label>Top Paper</label
+            ><select id="pt5" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
+            <label>Flute 1 Paper</label
+            ><select id="pf1" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
+            <label>Middle Paper</label
+            ><select id="pm" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
+            <label>Flute 2 Paper</label
+            ><select id="pf2" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
+            <label>Bottom Paper</label
+            ><select id="pb5" onchange="renderRates()">
+              <option>kraft</option>
+              <option>virgin</option>
+              <option>fbb</option>
+              <option>duplex</option>
+            </select>
 
-<h2>Rates</h2>
-<div id="rates" class="rate-grid"></div>
+            <label>Flute 1 Type</label
+            ><select id="ft1">
+              <option>a</option>
+              <option>b</option>
+              <option>c</option>
+              <option>e</option>
+            </select>
+            <label>Flute 2 Type</label
+            ><select id="ft2">
+              <option>a</option>
+              <option>b</option>
+              <option>c</option>
+              <option>e</option>
+            </select>
+          </div>
 
-<label>Wastage %</label><input id="w">
-<label>Conversion Rate</label><input id="cr">
+          <hr
+            style="margin: 18px 0; border: none; border-top: 1px solid #e5e7eb"
+          />
 
-<button onclick="calculate()">Calculate</button>
-<div class="result" id="out"></div>
+          <h2>Rates</h2>
+          <div id="rates" class="rate-grid"></div>
 
-</div>
+          <label>Wastage %</label><input id="w" /> <label>Conversion Rate</label
+          ><input id="cr" />
 
-<div class="card canvas-card">
-<canvas id="canvas" width="1200" height="420"></canvas>
-</div>
-</div>
-</div>
+          <button onclick="calculate()">Calculate</button>
+          <div class="result" id="out"></div>
+        </div>
 
-<script>
-const flute={a:1.5,b:1.37,c:1.45,e:1.27}
-const num=v=>{const n=parseFloat(v);return isNaN(n)?0:n}
+        <div class="card canvas-card">
+          <canvas id="canvas" width="1200" height="420"></canvas>
+        </div>
+      </div>
+    </div>
 
-function togglePly(){
-ply3.classList.toggle("hidden",ply.value==="5")
-ply5.classList.toggle("hidden",ply.value==="3")
-renderRates()
-}
+    <script>
+      const flute = { a: 1.5, b: 1.37, c: 1.45, e: 1.27 };
+      const num = (v) => {
+        const n = parseFloat(v);
+        return isNaN(n) ? 0 : n;
+      };
 
-function papers(){
-return ply.value==="3"
-?[pt.value,pf.value,pb.value]
-:[pt5.value,pf1.value,pm.value,pf2.value,pb5.value]
-}
+      function togglePly() {
+        ply3.classList.toggle("hidden", ply.value === "5");
+        ply5.classList.toggle("hidden", ply.value === "3");
+        renderRates();
+      }
 
-function renderRates(){
-rates.innerHTML=""
-;[...new Set(papers())].forEach(p=>{
-rates.innerHTML+=`<label>${p.toUpperCase()} Rate</label><input id="rate_${p}">`
-})
-}
+      function papers() {
+        return ply.value === "3"
+          ? [pt.value, pf.value, pb.value]
+          : [pt5.value, pf1.value, pm.value, pf2.value, pb5.value];
+      }
 
-function rate(p){
-return num(document.getElementById("rate_"+p)?.value)
-}
+      function renderRates() {
+        rates.innerHTML = "";
+        [...new Set(papers())].forEach((p) => {
+          rates.innerHTML += `<label>${p.toUpperCase()} Rate</label><input id="rate_${p}">`;
+        });
+      }
 
-function calculate(){
-let L=num(len.value),W=num(br.value),H=num(ht.value)
+      function rate(p) {
+        return num(document.getElementById("rate_" + p)?.value);
+      }
 
-if(unit.value==="cm"){L*=10;W*=10;H*=10}
-if(unit.value==="inch"){L*=25.4;W*=25.4;H*=25.4}
-if(dim.value==="i"){const a=ply.value==="3"?5:8;L+=a;W+=a;H+=a}
+      function calculate() {
+        let L = num(len.value),
+          W = num(br.value),
+          H = num(ht.value);
 
-const area=((W+H)*(2*(L+W)+40))/1e6
-let totalW=0,totalP=0
+        if (unit.value === "cm") {
+          L *= 10;
+          W *= 10;
+          H *= 10;
+        }
+        if (unit.value === "inch") {
+          L *= 25.4;
+          W *= 25.4;
+          H *= 25.4;
+        }
+        if (dim.value === "i") {
+          const a = ply.value === "3" ? 5 : 8;
+          L += a;
+          W += a;
+          H += a;
+        }
 
-if(ply.value==="3"){
-const wtT=num(gsm_t.value)*area/1000
-const wtF=num(gsm_f.value)*area*flute[ft.value]/1000
-const wtB=num(gsm_b.value)*area/1000
-totalW=wtT+wtF+wtB
-totalP=wtT*rate(pt.value)+wtF*rate(pf.value)+wtB*rate(pb.value)
-draw(L,W,H,pt.value)
-}else{
-const wtT=num(gsm_t5.value)*area/1000
-const wtF1=num(gsm_f1.value)*area*flute[ft1.value]/1000
-const wtM=num(gsm_m.value)*area/1000
-const wtF2=num(gsm_f2.value)*area*flute[ft2.value]/1000
-const wtB=num(gsm_b5.value)*area/1000
-totalW=wtT+wtF1+wtM+wtF2+wtB
-totalP=wtT*rate(pt5.value)+wtF1*rate(pf1.value)+wtM*rate(pm.value)+wtF2*rate(pf2.value)+wtB*rate(pb5.value)
-draw(L,W,H,pt5.value)
-}
+        const area = ((W + H) * (2 * (L + W) + 40)) / 1e6;
+        let totalW = 0,
+          totalP = 0;
 
-totalP=totalP*(1+num(w.value)/100)+num(cr.value)*totalW
-out.innerHTML=`Total Price: Rs. ${totalP.toFixed(2)}<br>Box Weight: ${(totalW*960).toFixed(2)}`
-}
+        if (ply.value === "3") {
+          const wtT = (num(gsm_t.value) * area) / 1000;
+          const wtF = (num(gsm_f.value) * area * flute[ft.value]) / 1000;
+          const wtB = (num(gsm_b.value) * area) / 1000;
+          totalW = wtT + wtF + wtB;
+          totalP =
+            wtT * rate(pt.value) + wtF * rate(pf.value) + wtB * rate(pb.value);
+          draw(L, W, H, pt.value);
+        } else {
+          const wtT = (num(gsm_t5.value) * area) / 1000;
+          const wtF1 = (num(gsm_f1.value) * area * flute[ft1.value]) / 1000;
+          const wtM = (num(gsm_m.value) * area) / 1000;
+          const wtF2 = (num(gsm_f2.value) * area * flute[ft2.value]) / 1000;
+          const wtB = (num(gsm_b5.value) * area) / 1000;
+          totalW = wtT + wtF1 + wtM + wtF2 + wtB;
+          totalP =
+            wtT * rate(pt5.value) +
+            wtF1 * rate(pf1.value) +
+            wtM * rate(pm.value) +
+            wtF2 * rate(pf2.value) +
+            wtB * rate(pb5.value);
+          draw(L, W, H, pt5.value);
+        }
 
-function draw(L,W,H,p){
-const ctx=canvas.getContext("2d")
-ctx.clearRect(0,0,canvas.width,canvas.height)
-const fill={kraft:"#b08953",virgin:"#d4a017",fbb:"#f5f6f2",duplex:"#e6e2d6"}[p]
-const glue=40
-const blankL=2*(L+W)+glue
-const blankW=W/2+H+W/2
-const s=Math.min((canvas.width*.85)/blankL,(canvas.height*.85)/blankW)
-const ox=(canvas.width-blankL*s)/2
-const oy=(canvas.height-blankW*s)/2
-ctx.fillStyle=fill
-ctx.fillRect(ox,oy,blankL*s,blankW*s)
-ctx.strokeStyle="#5C3A1E"
-ctx.lineWidth=2
-ctx.strokeRect(ox,oy,blankL*s,blankW*s)
-ctx.setLineDash([6,6])
-let x=glue
-ctx.beginPath()
-ctx.moveTo(ox+x*s,oy)
-ctx.lineTo(ox+x*s,oy+blankW*s)
-;[L,W,L].forEach(p=>{x+=p;ctx.moveTo(ox+x*s,oy);ctx.lineTo(ox+x*s,oy+blankW*s)})
-ctx.moveTo(ox,oy+(W/2)*s)
-ctx.lineTo(ox+blankL*s,oy+(W/2)*s)
-ctx.moveTo(ox,oy+(W/2+H)*s)
-ctx.lineTo(ox+blankL*s,oy+(W/2+H)*s)
-ctx.stroke()
-ctx.setLineDash([])
-}
+        totalP = totalP * (1 + num(w.value) / 100) + num(cr.value) * totalW;
+        out.innerHTML = `Total Price: Rs. ${totalP.toFixed(
+          2
+        )}<br>Box Weight: ${(totalW * 960).toFixed(2)}`;
+      }
 
-renderRates()
-</script>
-</body>
+      function draw(L, W, H, p) {
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const fill = {
+          kraft: "#b08953",
+          virgin: "#d4a017",
+          fbb: "#f5f6f2",
+          duplex: "#e6e2d6",
+        }[p];
+        const glue = 40;
+        const blankL = 2 * (L + W) + glue;
+        const blankW = W / 2 + H + W / 2;
+        const s = Math.min(
+          (canvas.width * 0.85) / blankL,
+          (canvas.height * 0.85) / blankW
+        );
+        const ox = (canvas.width - blankL * s) / 2;
+        const oy = (canvas.height - blankW * s) / 2;
+        ctx.fillStyle = fill;
+        ctx.fillRect(ox, oy, blankL * s, blankW * s);
+        ctx.strokeStyle = "#5C3A1E";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(ox, oy, blankL * s, blankW * s);
+        ctx.setLineDash([6, 6]);
+        let x = glue;
+        ctx.beginPath();
+        ctx.moveTo(ox + x * s, oy);
+        ctx.lineTo(ox + x * s, oy + blankW * s);
+        [L, W, L].forEach((p) => {
+          x += p;
+          ctx.moveTo(ox + x * s, oy);
+          ctx.lineTo(ox + x * s, oy + blankW * s);
+        });
+        ctx.moveTo(ox, oy + (W / 2) * s);
+        ctx.lineTo(ox + blankL * s, oy + (W / 2) * s);
+        ctx.moveTo(ox, oy + (W / 2 + H) * s);
+        ctx.lineTo(ox + blankL * s, oy + (W / 2 + H) * s);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      renderRates();
+    </script>
+  </body>
 </html>
