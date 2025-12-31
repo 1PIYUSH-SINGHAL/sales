@@ -191,6 +191,9 @@
             <option value="5">5 Ply</option>
           </select>
 
+          <label>Brand Name</label><input id="brand" />
+          <label>Customer Name</label><input id="customer" />
+
           <hr
             style="margin: 18px 0; border: none; border-top: 1px solid #e5e7eb"
           />
@@ -411,67 +414,90 @@
         const text = "#2B1A0F";
         const glue = 40;
 
+        const brandTxt = brand.value || "";
+        const customerTxt = customer.value || "";
+
         const top = W / 2;
         const bottom = W / 2;
         const blankL = 2 * (L + W) + glue;
         const blankW = top + H + bottom;
 
-        const s = Math.min(
-          (canvas.width * 0.85) / blankL,
-          (canvas.height * 0.78) / blankW
+        const scale = Math.min(
+          (canvas.width * 0.88) / blankL,
+          (canvas.height * 0.6) / blankW
         );
-        const ox = (canvas.width - blankL * s) / 2;
-        const oy = (canvas.height - blankW * s) / 2 + 20;
+        const blankX = (canvas.width - blankL * scale) / 2;
+        const blankY = (canvas.height - blankW * scale) / 2 + 70;
+
+        const yTitle = blankY - 70;
+        const yCustomer = blankY - 48;
+        const yPanels = blankY - 22;
 
         ctx.fillStyle = fill;
-        ctx.fillRect(ox, oy, blankL * s, blankW * s);
+        ctx.fillRect(blankX, blankY, blankL * scale, blankW * scale);
 
         ctx.strokeStyle = line;
         ctx.lineWidth = 2;
-        ctx.strokeRect(ox, oy, blankL * s, blankW * s);
+        ctx.strokeRect(blankX, blankY, blankL * scale, blankW * scale);
 
         ctx.setLineDash([6, 6]);
         let x = glue;
         ctx.beginPath();
-        ctx.moveTo(ox + x * s, oy);
-        ctx.lineTo(ox + x * s, oy + blankW * s);
+        ctx.moveTo(blankX + x * scale, blankY);
+        ctx.lineTo(blankX + x * scale, blankY + blankW * scale);
         [L, W, L].forEach((v) => {
           x += v;
-          ctx.moveTo(ox + x * s, oy);
-          ctx.lineTo(ox + x * s, oy + blankW * s);
+          ctx.moveTo(blankX + x * scale, blankY);
+          ctx.lineTo(blankX + x * scale, blankY + blankW * scale);
         });
-        ctx.moveTo(ox, oy + bottom * s);
-        ctx.lineTo(ox + blankL * s, oy + bottom * s);
-        ctx.moveTo(ox, oy + (bottom + H) * s);
-        ctx.lineTo(ox + blankL * s, oy + (bottom + H) * s);
+        ctx.moveTo(blankX, blankY + bottom * scale);
+        ctx.lineTo(blankX + blankL * scale, blankY + bottom * scale);
+        ctx.moveTo(blankX, blankY + (bottom + H) * scale);
+        ctx.lineTo(blankX + blankL * scale, blankY + (bottom + H) * scale);
         ctx.stroke();
         ctx.setLineDash([]);
 
         ctx.fillStyle = text;
-        ctx.font = `${Math.max(12 * s, 11)}px Inter`;
         ctx.textAlign = "center";
 
+        ctx.font = `${Math.max(18 * scale, 14)}px Inter`;
+        ctx.fillText(
+          `${brandTxt} BLANK KLD (${Math.round(L)}×${Math.round(
+            W
+          )}×${Math.round(H)} MM)`,
+          canvas.width / 2,
+          yTitle
+        );
+
+        ctx.font = `${Math.max(15 * scale, 12)}px Inter`;
+        ctx.fillText(customerTxt, canvas.width / 2, yCustomer);
+
+        ctx.font = `${Math.max(12 * scale, 11)}px Inter`;
         let tx = glue;
         [L, W, L, W].forEach((v) => {
-          ctx.fillText(`${Math.round(v)} MM`, ox + (tx + v / 2) * s, oy - 8);
+          ctx.fillText(
+            `${Math.round(v)} MM`,
+            blankX + (tx + v / 2) * scale,
+            yPanels
+          );
           tx += v;
         });
-        ctx.fillText(`${glue} MM`, ox + (glue * s) / 2, oy - 8);
+        ctx.fillText(`${glue} MM`, blankX + (glue * scale) / 2, yPanels);
 
         ctx.save();
-        ctx.translate(ox - 10, oy + (bottom * s) / 2);
+        ctx.translate(blankX - 14, blankY + (bottom * scale) / 2);
         ctx.rotate(-Math.PI / 2);
         ctx.fillText(`${Math.round(bottom)} MM`, 0, 0);
         ctx.restore();
 
         ctx.save();
-        ctx.translate(ox - 10, oy + (bottom + H / 2) * s);
+        ctx.translate(blankX - 14, blankY + (bottom + H / 2) * scale);
         ctx.rotate(-Math.PI / 2);
         ctx.fillText(`${Math.round(H)} MM`, 0, 0);
         ctx.restore();
 
         ctx.save();
-        ctx.translate(ox - 10, oy + (bottom + H + top / 2) * s);
+        ctx.translate(blankX - 14, blankY + (bottom + H + top / 2) * scale);
         ctx.rotate(-Math.PI / 2);
         ctx.fillText(`${Math.round(top)} MM`, 0, 0);
         ctx.restore();
