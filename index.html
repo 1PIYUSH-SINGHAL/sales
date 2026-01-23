@@ -1,517 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Corrugated Box Calculator</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: Inter, system-ui;
-        background: #eef1f5;
-        color: #1f2937;
-      }
-      .wrapper {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-      }
-      h1 {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 20px;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: 380px 1fr;
-        gap: 24px;
-      }
-      .card {
-        background: #fff;
-        border-radius: 14px;
-        padding: 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-      }
-      .card h2 {
-        margin: 0 0 14px;
-        font-size: 18px;
-        font-weight: 600;
-      }
-      label {
-        font-size: 13px;
-        font-weight: 500;
-        margin-top: 10px;
-        display: block;
-      }
-      input,
-      select {
-        width: 100%;
-        padding: 10px;
-        margin-top: 6px;
-        border-radius: 8px;
-        border: 1px solid #d1d5db;
-        font-size: 14px;
-      }
-      button {
-        width: 100%;
-        margin-top: 18px;
-        padding: 14px;
-        border-radius: 10px;
-        border: none;
-        background: #2563eb;
-        color: #fff;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #1e4fd8;
-      }
-      .result {
-        margin-top: 14px;
-        font-size: 15px;
-        font-weight: 600;
-      }
-      .canvas-card {
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      canvas {
-        width: 100%;
-        height: 420px;
-        border-radius: 12px;
-        background: #fafafa;
-        border: 1px solid #e5e7eb;
-      }
-      .hidden {
-        display: none;
-      }
-      .rate-grid {
-        display: grid;
-        gap: 10px;
-      }
-      @media (max-width: 1200px) {
-        .grid {
-          grid-template-columns: 360px 1fr;
-        }
-        canvas {
-          height: 380px;
-        }
-      }
+<head>
+<meta charset="UTF-8" />
+<title>Corrugated Box Calculator</title>
 
-      @media (max-width: 1024px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
-        .canvas-card {
-          order: -1;
-        }
-        canvas {
-          height: 360px;
-        }
-      }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-      @media (max-width: 768px) {
-        .wrapper {
-          margin: 20px auto;
-        }
-        h1 {
-          font-size: 24px;
-        }
-        .card {
-          padding: 16px;
-        }
-        input,
-        select {
-          padding: 12px;
-          font-size: 15px;
-        }
-        button {
-          padding: 14px;
-          font-size: 16px;
-        }
-        canvas {
-          height: 320px;
-        }
-      }
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui;
+  background: #eef1f5;
+  color: #1f2937;
+}
+.wrapper {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+h1 { font-size: 28px; font-weight: 700; margin-bottom: 20px; }
+.grid { display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+label { font-size: 13px; font-weight: 500; margin-top: 10px; display: block; }
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+canvas {
+  width: 100%;
+  height: 420px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.hidden { display: none; }
+</style>
+</head>
 
-      @media (max-width: 480px) {
-        h1 {
-          font-size: 22px;
-        }
-        label {
-          font-size: 12px;
-        }
-        input,
-        select {
-          padding: 14px;
-          font-size: 16px;
-        }
-        canvas {
-          height: 260px;
-        }
-      }
-    </style>
-  </head>
+<body>
+<div class="wrapper">
+<h1>Corrugated Box Calculator</h1>
 
-  <body>
-    <div class="wrapper">
-      <h1>Corrugated Box Calculator</h1>
+<div class="grid">
+<div class="card">
 
-      <div class="grid">
-        <div class="card">
-          <h2>Box Details</h2>
-          <label>Length</label><input id="len" /> <label>Breadth</label
-          ><input id="br" /> <label>Height</label><input id="ht" />
+<label>Length</label><input id="len">
+<label>Breadth</label><input id="br">
+<label>Height</label><input id="ht">
 
-          <label>Unit</label>
-          <select id="unit">
-            <option value="mm">mm</option>
-            <option value="cm">cm</option>
-            <option value="inch">inch</option>
-          </select>
+<label>Unit</label>
+<select id="unit">
+  <option value="mm">mm</option>
+  <option value="cm">cm</option>
+  <option value="inch">inch</option>
+</select>
 
-          <label>Dimension</label>
-          <select id="dim">
-            <option value="i">Inner</option>
-            <option value="o">Outer</option>
-          </select>
+<label>Dimension</label>
+<select id="dim">
+  <option value="i">Inner</option>
+  <option value="o">Outer</option>
+</select>
 
-          <label>Ply</label>
-          <select id="ply" onchange="togglePly()">
-            <option value="3">3 Ply</option>
-            <option value="5">5 Ply</option>
-          </select>
+<label>Ply</label>
+<select id="ply">
+  <option value="3">3 Ply</option>
+  <option value="5">5 Ply</option>
+</select>
 
-          <label>Brand Name</label><input id="brand" />
-          <label>Customer Name</label><input id="customer" />
+<label>Brand</label><input id="brand">
+<label>Customer</label><input id="customer">
 
-          <hr
-            style="margin: 18px 0; border: none; border-top: 1px solid #e5e7eb"
-          />
+<hr>
 
-          <div id="ply3">
-            <h2>3 Ply</h2>
-            <label>Top GSM</label><input id="gsm_t" /> <label>Flute GSM</label
-            ><input id="gsm_f" /> <label>Bottom GSM</label><input id="gsm_b" />
+<div id="ply3">
+<label>Top GSM</label><input id="gsm_t">
+<label>Flute GSM</label><input id="gsm_f">
+<label>Bottom GSM</label><input id="gsm_b">
 
-            <label>Top Paper</label
-            ><select id="pt" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
-            <label>Flute Paper</label
-            ><select id="pf" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
-            <label>Bottom Paper</label
-            ><select id="pb" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
+<label>Top Paper</label>
+<select id="pt"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
 
-            <label>Flute Type</label
-            ><select id="ft">
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>E</option>
-            </select>
-          </div>
+<label>Flute Paper</label>
+<select id="pf"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
 
-          <div id="ply5" class="hidden">
-            <h2>5 Ply</h2>
-            <label>Top GSM</label><input id="gsm_t5" />
-            <label>Flute 1 GSM</label><input id="gsm_f1" />
-            <label>Middle GSM</label><input id="gsm_m" />
-            <label>Flute 2 GSM</label><input id="gsm_f2" />
-            <label>Bottom GSM</label><input id="gsm_b5" />
+<label>Bottom Paper</label>
+<select id="pb"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
 
-            <label>Top Paper</label
-            ><select id="pt5" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
-            <label>Flute 1 Paper</label
-            ><select id="pf1" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
-            <label>Middle Paper</label
-            ><select id="pm" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
-            <label>Flute 2 Paper</label
-            ><select id="pf2" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
-            <label>Bottom Paper</label
-            ><select id="pb5" onchange="renderRates()">
-              <option>kraft</option>
-              <option>virgin kraft</option>
-              <option>fbb</option>
-              <option>duplex</option>
-            </select>
+<label>Flute Type</label>
+<select id="ft"><option>A</option><option>B</option><option>C</option><option>E</option></select>
+</div>
 
-            <label>Flute 1 Type</label
-            ><select id="ft1">
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>E</option>
-            </select>
-            <label>Flute 2 Type</label
-            ><select id="ft2">
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>E</option>
-            </select>
-          </div>
+<div id="ply5" class="hidden">
+<label>Top GSM</label><input id="gsm_t5">
+<label>Flute 1 GSM</label><input id="gsm_f1">
+<label>Middle GSM</label><input id="gsm_m">
+<label>Flute 2 GSM</label><input id="gsm_f2">
+<label>Bottom GSM</label><input id="gsm_b5">
 
-          <hr
-            style="margin: 18px 0; border: none; border-top: 1px solid #e5e7eb"
-          />
+<label>Top Paper</label><select id="pt5"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
+<label>Flute 1 Paper</label><select id="pf1"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
+<label>Middle Paper</label><select id="pm"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
+<label>Flute 2 Paper</label><select id="pf2"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
+<label>Bottom Paper</label><select id="pb5"><option>kraft</option><option>virgin kraft</option><option>fbb</option><option>duplex</option></select>
 
-          <h2>Rates</h2>
-          <div id="rates" class="rate-grid"></div>
+<label>Flute 1 Type</label><select id="ft1"><option>A</option><option>B</option><option>C</option><option>E</option></select>
+<label>Flute 2 Type</label><select id="ft2"><option>A</option><option>B</option><option>C</option><option>E</option></select>
+</div>
 
-          <label>Wastage %</label><input id="w" /> <label>Conversion Rate</label
-          ><input id="cr" />
+<hr>
+<h3>Rates</h3>
+<div id="rates"></div>
 
-          <button onclick="calculate()">Calculate</button>
-          <div class="result" id="out"></div>
-          <button onclick="downloadKLD()">Download KLD (PNG)</button>
-        </div>
+<label>Wastage %</label><input id="w">
+<label>Conversion Rate</label><input id="cr">
 
-        <div class="card canvas-card">
-          <canvas id="canvas" width="1200" height="420"></canvas>
-        </div>
-      </div>
-    </div>
+<button onclick="calculate()">Calculate</button>
+<div id="out"></div>
+<button onclick="downloadKLD()">Download KLD</button>
 
-    <script>
-      const flute = { a: 1.5, b: 1.37, c: 1.45, e: 1.27 };
-      const num = (v) => {
-        const n = parseFloat(v);
-        return isNaN(n) ? 0 : n;
-      };
+</div>
 
-      function togglePly() {
-        ply3.classList.toggle("hidden", ply.value === "5");
-        ply5.classList.toggle("hidden", ply.value === "3");
-        renderRates();
-      }
+<div class="card">
+<canvas id="canvas" width="1200" height="420"></canvas>
+</div>
 
-      function papers() {
-        return ply.value === "3"
-          ? [pt.value, pf.value, pb.value]
-          : [pt5.value, pf1.value, pm.value, pf2.value, pb5.value];
-      }
+</div>
+</div>
 
-      function renderRates() {
-        rates.innerHTML = "";
-        [...new Set(papers())].forEach((p) => {
-          rates.innerHTML += `<label>${p.toUpperCase()} Rate</label><input id="rate_${p}">`;
-        });
-      }
+<script>
+const $ = id => document.getElementById(id);
+const num = v => isNaN(parseFloat(v)) ? 0 : parseFloat(v);
 
-      function rate(p) {
-        return num(document.getElementById("rate_" + p)?.value);
-      }
+const flute = { A:1.5, B:1.37, C:1.45, E:1.27 };
+const paperColor = {
+  "kraft":"#b08953",
+  "virgin kraft":"#d4a017",
+  "fbb":"#f5f6f2",
+  "duplex":"#e6e2d6"
+};
 
-      function calculate() {
-        let L = num(len.value),
-          W = num(br.value),
-          H = num(ht.value);
+$("ply").onchange = () => {
+  $("ply3").classList.toggle("hidden", $("ply").value==="5");
+  $("ply5").classList.toggle("hidden", $("ply").value==="3");
+  renderRates();
+};
 
-        if (unit.value === "cm") {
-          L *= 10;
-          W *= 10;
-          H *= 10;
-        }
-        if (unit.value === "inch") {
-          L *= 25.4;
-          W *= 25.4;
-          H *= 25.4;
-        }
-        if (dim.value === "i") {
-          const a = ply.value === "3" ? 5 : 8;
-          L += a;
-          W += a;
-          H += a;
-        }
+function papers(){
+  return $("ply").value==="3"
+    ? [pt.value,pf.value,pb.value]
+    : [pt5.value,pf1.value,pm.value,pf2.value,pb5.value];
+}
 
-        const area = ((W + H) * (2 * (L + W) + 40)) / 1e6;
-        let totalW = 0,
-          totalP = 0;
+function renderRates(){
+  rates.innerHTML="";
+  [...new Set(papers())].forEach(p=>{
+    const id = p.replace(/\s+/g,"_");
+    rates.innerHTML+=`<label>${p.toUpperCase()} Rate</label><input id="rate_${id}">`;
+  });
+}
 
-        if (ply.value === "3") {
-          const wtT = (num(gsm_t.value) * area) / 1000;
-          const wtF = (num(gsm_f.value) * area * flute[ft.value]) / 1000;
-          const wtB = (num(gsm_b.value) * area) / 1000;
-          totalW = wtT + wtF + wtB;
-          totalP =
-            wtT * rate(pt.value) + wtF * rate(pf.value) + wtB * rate(pb.value);
-          draw(L, W, H, pt.value);
-        } else {
-          const wtT = (num(gsm_t5.value) * area) / 1000;
-          const wtF1 = (num(gsm_f1.value) * area * flute[ft1.value]) / 1000;
-          const wtM = (num(gsm_m.value) * area) / 1000;
-          const wtF2 = (num(gsm_f2.value) * area * flute[ft2.value]) / 1000;
-          const wtB = (num(gsm_b5.value) * area) / 1000;
-          totalW = wtT + wtF1 + wtM + wtF2 + wtB;
-          totalP =
-            wtT * rate(pt5.value) +
-            wtF1 * rate(pf1.value) +
-            wtM * rate(pm.value) +
-            wtF2 * rate(pf2.value) +
-            wtB * rate(pb5.value);
-          draw(L, W, H, pt5.value);
-        }
+function rate(p){
+  return num($("rate_"+p.replace(/\s+/g,"_"))?.value);
+}
 
-        totalP = totalP * (1 + num(w.value) / 100) + num(cr.value) * totalW;
-        out.innerHTML = `Total Price: Rs. ${totalP.toFixed(
-          2
-        )}<br>Box Weight: ${(totalW * 960).toFixed(2)}`;
-      }
+function calculate(){
+  let L=num(len.value), W=num(br.value), H=num(ht.value);
+  if(unit.value==="cm"){L*=10;W*=10;H*=10;}
+  if(unit.value==="inch"){L*=25.4;W*=25.4;H*=25.4;}
+  if(dim.value==="i"){const a=ply.value==="3"?5:8;L+=a;W+=a;H+=a;}
 
-      function draw(L, W, H, p) {
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const area=((W+H)*(2*(L+W)+40))/1e6;
+  let totalW=0,totalP=0;
 
-        const fill = {
-          kraft: "#b08953",
-          virgin: "#d4a017",
-          fbb: "#f5f6f2",
-          duplex: "#e6e2d6",
-        }[p];
-        const line = "#5C3A1E";
-        const text = "#2B1A0F";
-        const glue = 40;
+  if(ply.value==="3"){
+    const wtT=(num(gsm_t.value)*area)/1000;
+    const wtF=(num(gsm_f.value)*area*flute[ft.value])/1000;
+    const wtB=(num(gsm_b.value)*area)/1000;
+    totalW=wtT+wtF+wtB;
+    totalP=wtT*rate(pt.value)+wtF*rate(pf.value)+wtB*rate(pb.value);
+    draw(L,W,H,pt.value);
+  } else {
+    const wtT=(num(gsm_t5.value)*area)/1000;
+    const wtF1=(num(gsm_f1.value)*area*flute[ft1.value])/1000;
+    const wtM=(num(gsm_m.value)*area)/1000;
+    const wtF2=(num(gsm_f2.value)*area*flute[ft2.value])/1000;
+    const wtB=(num(gsm_b5.value)*area)/1000;
+    totalW=wtT+wtF1+wtM+wtF2+wtB;
+    totalP=wtT*rate(pt5.value)+wtF1*rate(pf1.value)+wtM*rate(pm.value)+wtF2*rate(pf2.value)+wtB*rate(pb5.value);
+    draw(L,W,H,pt5.value);
+  }
 
-        const brandTxt = brand.value || "";
-        const customerTxt = customer.value || "";
+  totalP=totalP*(1+num(w.value)/100)+num(cr.value)*totalW;
+  out.innerHTML=`\nTotal Price: Rs. ${totalP.toFixed(2)}<br>Weight: ${(totalW*960).toFixed(2)} g`;
+}
 
-        const top = W / 2;
-        const bottom = W / 2;
-        const blankL = 2 * (L + W) + glue;
-        const blankW = top + H + bottom;
+function draw(L,W,H,p){
+  const ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle=paperColor[p]||"#ddd";
+  ctx.fillRect(100,100,canvas.width-200,canvas.height-200);
+}
 
-        const scale = Math.min(
-          (canvas.width * 0.88) / blankL,
-          (canvas.height * 0.6) / blankW
-        );
-        const blankX = (canvas.width - blankL * scale) / 2;
-        const blankY = (canvas.height - blankW * scale) / 2 + 70;
+function downloadKLD(){
+  const a=document.createElement("a");
+  a.href=canvas.toDataURL();
+  a.download="kld.png";
+  a.click();
+}
 
-        const yTitle = blankY - 70;
-        const yCustomer = blankY - 48;
-        const yPanels = blankY - 22;
+renderRates();
+</script>
 
-        ctx.fillStyle = fill;
-        ctx.fillRect(blankX, blankY, blankL * scale, blankW * scale);
-
-        ctx.strokeStyle = line;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(blankX, blankY, blankL * scale, blankW * scale);
-
-        ctx.setLineDash([6, 6]);
-        let x = glue;
-        ctx.beginPath();
-        ctx.moveTo(blankX + x * scale, blankY);
-        ctx.lineTo(blankX + x * scale, blankY + blankW * scale);
-        [L, W, L].forEach((v) => {
-          x += v;
-          ctx.moveTo(blankX + x * scale, blankY);
-          ctx.lineTo(blankX + x * scale, blankY + blankW * scale);
-        });
-        ctx.moveTo(blankX, blankY + bottom * scale);
-        ctx.lineTo(blankX + blankL * scale, blankY + bottom * scale);
-        ctx.moveTo(blankX, blankY + (bottom + H) * scale);
-        ctx.lineTo(blankX + blankL * scale, blankY + (bottom + H) * scale);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        ctx.fillStyle = text;
-        ctx.textAlign = "center";
-
-        ctx.font = `${Math.max(18 * scale, 14)}px Inter`;
-        ctx.fillText(
-          `${brandTxt} BLANK KLD (${Math.round(L)}×${Math.round(
-            W
-          )}×${Math.round(H)} MM)`,
-          canvas.width / 2,
-          yTitle
-        );
-
-        ctx.font = `${Math.max(15 * scale, 12)}px Inter`;
-        ctx.fillText(customerTxt, canvas.width / 2, yCustomer);
-
-        ctx.font = `${Math.max(12 * scale, 11)}px Inter`;
-        let tx = glue;
-        [L, W, L, W].forEach((v) => {
-          ctx.fillText(
-            `${Math.round(v)} MM`,
-            blankX + (tx + v / 2) * scale,
-            yPanels
-          );
-          tx += v;
-        });
-        ctx.fillText(`${glue} MM`, blankX + (glue * scale) / 2, yPanels);
-
-        ctx.save();
-        ctx.translate(blankX - 14, blankY + (bottom * scale) / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText(`${Math.round(bottom)} MM`, 0, 0);
-        ctx.restore();
-
-        ctx.save();
-        ctx.translate(blankX - 14, blankY + (bottom + H / 2) * scale);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText(`${Math.round(H)} MM`, 0, 0);
-        ctx.restore();
-
-        ctx.save();
-        ctx.translate(blankX - 14, blankY + (bottom + H + top / 2) * scale);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText(`${Math.round(top)} MM`, 0, 0);
-        ctx.restore();
-      }
-
-      function downloadKLD() {
-        const link = document.createElement("a");
-        link.download = "kld.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      }
-
-      renderRates();
-    </script>
-  </body>
+</body>
 </html>
